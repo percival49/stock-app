@@ -10,9 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_20_053128) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_24_171525) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "friendships", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "friend_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["friend_id"], name: "index_friendships_on_friend_id"
+    t.index ["user_id"], name: "index_friendships_on_user_id"
+  end
 
   create_table "stocks", force: :cascade do |t|
     t.string "ticker"
@@ -20,6 +29,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_20_053128) do
     t.decimal "last_price"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "user_stocks", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "stock_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stock_id"], name: "index_user_stocks_on_stock_id"
+    t.index ["user_id"], name: "index_user_stocks_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -30,8 +48,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_20_053128) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.boolean "is_admin", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "friendships", "users"
+  add_foreign_key "friendships", "users", column: "friend_id"
+  add_foreign_key "user_stocks", "stocks"
+  add_foreign_key "user_stocks", "users"
 end

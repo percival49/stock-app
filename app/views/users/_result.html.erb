@@ -1,0 +1,9 @@
+<% if @stock %>
+  <div class="card card-header results-block">
+    <strong>Name:</strong> <%= @stock[:name] %>
+    <strong>Current price:</strong> <%= @stock[:currentPrice] %>
+    <% if !current_user.stock_already_tracked?(params[:stock])%>
+      <%= link_to 'Add to portfolio', user_stocks_path(user: current_user, stock: params[:stock]), data: {turbo_method: :post}, class: 'btn btn-xs btn-success' %>
+    <% end %>
+  </div>
+<% end %>

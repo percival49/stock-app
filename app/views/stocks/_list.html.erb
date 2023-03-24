@@ -1,0 +1,22 @@
+<div class="row col-9 mt-3">
+  <table class="table table-bordered table-hover mt-3">
+    <thead>
+      <tr>
+        <th scope="col">Ticker</th>
+        <th scope="col">Name</th>
+        <th scope="col">Current Price</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @stocks.each do |stock| %>
+        <tr>
+          <td> <%= stock.ticker %> </td>
+          <td> <%= stock.name %> </td>
+          <td> <%= stock.last_price %> </td>
+          <td> <%= button_to :Remove, remove_stock_path(id: stock.id), method: :delete, class:"btn" %> </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
